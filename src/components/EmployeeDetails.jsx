@@ -1,11 +1,11 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const EmployeeDetails = () => {
-  const {emp_id:id} = useParams();
+  const { emp_id: id } = useParams();
   const params = useParams();
 
-  console.log(params)
+  console.log(params);
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -19,21 +19,28 @@ const EmployeeDetails = () => {
       const requestOptions = {
         method: "GET",
         headers: myHeaders,
-        redirect: "follow"
+        redirect: "follow",
       };
 
       try {
-        const response = await fetch(`https://free-ap-south-1.cosmocloud.io/development/api/user/${id}`, requestOptions);
+        const response = await fetch(
+          `https://free-ap-south-1.cosmocloud.io/development/api/user/${id}`,
+          requestOptions
+        );
         if (response.ok) {
           const result = await response.json();
+          console.log("hello",result)
           setEmployee(result);
         } else {
-          console.error('Failed to fetch employee data:', await response.text());
-          setEmployee(null); 
+          console.error(
+            "Failed to fetch employee data:",
+            await response.text()
+          );
+          setEmployee(null);
         }
       } catch (error) {
-        console.error('Error fetching employee data:', error);
-        setEmployee(null); 
+        console.error("Error fetching employee data:", error);
+        setEmployee(null);
       } finally {
         setLoading(false);
       }
@@ -51,11 +58,24 @@ const EmployeeDetails = () => {
   }
 
   return (
-    <div>
-      <h1>Employee Details</h1>
-      <p><strong>Name:</strong> {employee.name}</p>
-      <p><strong>Address:</strong> {employee.address}</p>
-      <p><strong>Contacts:</strong> {employee.contacts}</p>
+    <div className="employee-details-container">
+      <h1 className="title">Employee Details</h1>
+      <table className="employee-table">
+        <tbody>
+          <tr>
+            <td className="label">Name:</td>
+            <td>{employee.name}</td>
+          </tr>
+          <tr>
+            <td className="label">Address:</td>
+            <td>{employee.address}</td>
+          </tr>
+          <tr>
+          <td className="label">Contact:</td>
+          <td>{employee.contacts}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };
